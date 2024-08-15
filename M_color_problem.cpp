@@ -26,5 +26,5 @@ public:
     bool graphColoring(bool graph[101][101], int m, int n) {
        vector<int> color(n,-1);
         return solve(0,graph,m,n,color);
-    }cvd
+    }
 };
