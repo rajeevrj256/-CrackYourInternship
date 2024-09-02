@@ -22,4 +22,4 @@ public:
         if(root==NULL)return true;
         return check(root->left,root->right);
     }
-};
+};n
