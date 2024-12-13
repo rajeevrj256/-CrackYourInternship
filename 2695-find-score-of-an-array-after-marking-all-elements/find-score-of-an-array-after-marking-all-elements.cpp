@@ -2,40 +2,37 @@ class Solution {
 public:
     long long findScore(vector<int>& nums) {
         int n=nums.size();
-        unordered_map<int,vector<int>>hash;
-        priority_queue<pair<int, vector<int>>, vector<pair<int, vector<int>>>,
-        greater<pair<int, vector<int>>>> q;
+       
+        priority_queue<pair<int,int>, vector<pair<int, int>>,
+        greater<pair<int,int >>> q;
         int i=0;
         for(int num:nums){
-            hash[num].push_back(i++);
+           q.push({num,i++});
         }
 
-        for(auto i:hash){
-            q.push({i.first,i.second});
-        }
+        
         long long  score=0;
         vector<bool>marked(n,false);
         while(!q.empty()){
-            pair<int,vector<int>>front=q.top();
+            pair<int,int>front=q.top();
+            int num=front.first;
+            int idx=front.second;
             q.pop();
-            vector<int>arr=front.second;
-            for(int num:arr){
-                if(!marked[num]){
-                    marked[num]=true;
-                    score+=front.first;
-                    if(num>=1 && num<n-1){
-                        marked[num-1]=true;
-                        marked[num+1]=true;
+            
+            
+                if(!marked[idx]){
+                    marked[idx]=true;
+                    score+=num;
+                    if(idx>0){
+                        marked[idx-1]=true;
 
                     }
 
-                    if(num==0){
-                          marked[num+1]=true;
-                    }else if(num==n-1){
-                        marked[num-1]=true;
+                    if(idx<n-1){
+                        marked[idx+1]=true;
                     }
                 }
-            }
+          
         }
         return score;
 
