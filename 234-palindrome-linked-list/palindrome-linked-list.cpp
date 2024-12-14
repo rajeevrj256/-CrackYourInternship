@@ -10,15 +10,49 @@
  */
 class Solution {
 public:
-    bool isPalindrome(ListNode* head) {
-        string s="";
+
+    void rev(ListNode*& head){
+        ListNode* prev=NULL;
+        ListNode* next=NULL;
         ListNode* curr=head;
+
         while(curr){
-            s+=to_string(curr->val);
-            curr=curr->next;
+            next=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=next;
         }
-        string rev=s;
-        reverse(s.begin(),s.end());
-        return s==rev;
+        head=prev;
+        
+    }
+    bool isPalindrome(ListNode* head) {
+
+        if(!head || !head->next)return true;
+        ListNode* slow=head;
+        ListNode* fast=head;
+
+        while(fast && fast->next){
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+
+        rev(slow);
+
+        ListNode*first=head;
+        ListNode*second=slow;
+
+        while(second){
+            if(first->val!=second->val)return false;
+
+            first=first->next;
+            second=second->next;
+        }
+ return true;
+
+        
+
+
+
+
     }
 };
