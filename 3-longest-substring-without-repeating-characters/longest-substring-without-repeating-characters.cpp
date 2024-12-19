@@ -7,12 +7,12 @@ public:
         unordered_map<char,int>hash;
         int len=0;
         while(j<n){
-            hash[s[j]]++;
-            while(hash[s[j]]>1){
-                hash[s[i]]--;
+            
+            if(hash.find(s[j])!=hash.end() && hash[s[j]] >= i){
+                i=hash[s[j]]+1;
                 
-            i++;
             }
+            hash[s[j]]=j;
             len=max(len,j-i+1);
             j++;
         }
