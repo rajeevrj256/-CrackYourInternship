@@ -1,11 +1,9 @@
 class Solution {
 public:
-    void backtracking(vector<vector<int>>&ans,vector<int>&res,vector<int>&nums,int index,int target,int sum){
-        if(sum>target){
-            return ;
-        }
+    void backtracking(vector<vector<int>>&ans,vector<int>&res,vector<int>&nums,int index,int target){
+        
 
-        if(sum==target){
+        if(target==0){
             ans.push_back(res);
         }
 
@@ -13,11 +11,14 @@ public:
             if (i > index && nums[i] == nums[i-1]) {
                 continue;
             }
+            if(target<0){
+                break;
+            }
             
             
             
             res.push_back(nums[i]);
-            backtracking(ans,res,nums,i+1,target,sum+nums[i]);
+            backtracking(ans,res,nums,i+1,target-nums[i]);
             res.pop_back();
         }
     }
@@ -26,7 +27,7 @@ public:
         vector<int>res;
         sort(candidates.begin(),candidates.end());
 
-        backtracking(ans,res,candidates,0,target,0);
+        backtracking(ans,res,candidates,0,target);
 
         return ans;
     }
