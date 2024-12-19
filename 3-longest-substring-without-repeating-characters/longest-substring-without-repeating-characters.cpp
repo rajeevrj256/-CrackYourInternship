@@ -10,9 +10,7 @@ public:
             hash[s[j]]++;
             while(hash[s[j]]>1){
                 hash[s[i]]--;
-                if(hash[s[i]]==0){
-                    hash.erase(s[i]);
-                }
+                
             i++;
             }
             len=max(len,j-i+1);
