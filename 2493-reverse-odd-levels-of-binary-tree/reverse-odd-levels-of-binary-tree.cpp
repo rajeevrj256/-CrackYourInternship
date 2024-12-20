@@ -10,46 +10,50 @@
  * };
  */
 class Solution {
-public:
+  public:
     TreeNode* reverseOddLevels(TreeNode* root) {
-        queue<TreeNode*>q;
-        q.push(root);
-        int flag=1;
-        while(!q.empty()){
-            vector<int>store;
-            int t=q.size();
-            while(t--){
-                TreeNode* node=q.front();
-                q.pop();
-                if(node->left){
-                    store.push_back(node->left->val);
-                    q.push(node->left);
+      
+      queue < TreeNode *> q;
+      if (root) q.push(root);
+      vector < TreeNode *> store;
+          int flag = 0;
+      while (q.size()) {
+             int t = q.size();
 
-                }
+        while (t--) {
+        TreeNode * node=q.front();
 
-                if(node->right){
-                    store.push_back(node->right->val);
-                    q.push(node->right);
-                }
-            }
-            if(flag && store.size()>0){
-                int t=q.size();
-                int i=store.size()-1;
 
-               while(t--){
-                    TreeNode* node=q.front();
-                    q.pop();
-                    node->val=store[i];
-                    q.push(node);
-                    i--;
-               }
+          q.pop();
+          if (flag % 2) {
+            store.push_back(node);
+          }
 
-            }
-               flag=!flag;
-
+          if (node -> left) {
+            q.push(node -> left);
+          }
+          if (node -> right) {
+            q.push(node -> right);
+          }
 
         }
-            return root;
+
+        if (flag % 2) {
+              int i = 0;
+              int j = store.size() - 1;
+          while (i < j) {
+            swap(store[i] -> val, store[j] -> val);
+            i++;
+            j--;
+          }
+        }
+        store.clear();
+        flag++;
+
+
+      }
+
+      return root;
 
     }
 };
