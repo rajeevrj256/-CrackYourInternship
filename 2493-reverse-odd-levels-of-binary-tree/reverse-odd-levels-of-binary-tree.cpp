@@ -14,34 +14,34 @@ public:
     TreeNode* reverseOddLevels(TreeNode* root) {
         queue<TreeNode*>q;
         q.push(root);
-        bool flag=false;
+        int flag=1;
         while(!q.empty()){
-            vector<TreeNode*>store;
+            vector<int>store;
             int t=q.size();
             while(t--){
                 TreeNode* node=q.front();
                 q.pop();
-                store.push_back(node);
                 if(node->left){
-                   
+                    store.push_back(node->left->val);
                     q.push(node->left);
 
                 }
 
                 if(node->right){
-                    
+                    store.push_back(node->right->val);
                     q.push(node->right);
                 }
             }
-            if(flag){
+            if(flag && store.size()>0){
                 int t=q.size();
-                int i=0;
-                int j=store.size()-1;
+                int i=store.size()-1;
 
-               while(i<j){
-                    swap(store[i]->val,store[j]->val);
-                    i++;
-                    j--;
+               while(t--){
+                    TreeNode* node=q.front();
+                    q.pop();
+                    node->val=store[i];
+                    q.push(node);
+                    i--;
                }
 
             }
