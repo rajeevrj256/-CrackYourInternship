@@ -27,15 +27,15 @@ public:
         }
         int cnt=0;
         vector<bool>vis(n,false);
-        for(int i=0;i<n;i++){
+       
 
-            if(!vis[i]){
+            
 
-                dfs(adj,values,vis,k,i,cnt);
+                dfs(adj,values,vis,k,0,cnt);
 
-            };
+            
 
-        }
+        
 
         return cnt;
     }
