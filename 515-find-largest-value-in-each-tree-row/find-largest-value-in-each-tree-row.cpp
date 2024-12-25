@@ -26,7 +26,7 @@ public:
             while(t--){
                 TreeNode* Node=q.front();
                 q.pop();
-                if(Node !=NULL){
+                
 
                 maxi=max(maxi,Node->val);
 
@@ -37,7 +37,7 @@ public:
                 if(Node->right){
                     q.push(Node->right);
                 }
-                }
+                
             }
             ans.push_back(maxi);
         }
