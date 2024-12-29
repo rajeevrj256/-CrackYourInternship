@@ -14,21 +14,24 @@ public:
         priority_queue<pair<int,ListNode*>,vector<pair<int,ListNode*>>,greater<pair<int,ListNode*>>>minheap;
 
         for(int i=0;i<lists.size();i++){
-            ListNode*curr=lists[i];
-            while(curr){
-                minheap.push({curr->val,curr});
-                curr=curr->next;
+           if (lists[i]) {
+                minheap.push({lists[i]->val, lists[i]});
             }
 
         }
+
 
         ListNode* dummy=new ListNode(0);
         ListNode*newhead=dummy;
 
         while(!minheap.empty()){
-            newhead->next=minheap.top().second;
-            newhead=newhead->next;
+            ListNode* node = minheap.top().second;
             minheap.pop();
+            newhead->next=node;
+            newhead=newhead->next;
+            if(node->next){
+                minheap.push({node->next->val,node->next});
+            }
         }
 
         return dummy->next;
