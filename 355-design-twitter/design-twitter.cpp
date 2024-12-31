@@ -1,46 +1,34 @@
 class Twitter {
 public:
-    int postseq=1;
-    unordered_map<int,vector<pair<int,int>>>postweet;
-    unordered_map<int,unordered_set<int>>follower;
+    unordered_set<int>user[501];
+    vector<pair<int,int>>tweet;
     Twitter() {
         
     }
     
     void postTweet(int userId, int tweetId) {
-        postweet[userId].push_back({postseq++,tweetId});
-
+        tweet.push_back({tweetId,userId});
+        
     }
     
     vector<int> getNewsFeed(int userId) {
-        priority_queue<pair<int,int>>q;
-
-        for(auto& post:postweet[userId]){
-
-             q.push(post);
-        }
-        for(int followeeId:follower[userId]){
-            for (auto& post : postweet[followeeId]) {
-                q.push(post);
+        int t=tweet.size();
+        vector<int>ans;
+        for(int i=t-1;i>=0 && ans.size()<10;i--){
+            if(tweet[i].second==userId || user[userId].find(tweet[i].second)!=user[userId].end()){
+                ans.push_back(tweet[i].first);
             }
         }
-
-        vector<int>ans;
-        while(!q.empty() && ans.size()<10){
-            ans.push_back(q.top().second);
-            q.pop();
-        }
-
         return ans;
     }
     
     void follow(int followerId, int followeeId) {
-        follower[followerId].insert(followeeId);
+        user[followerId].insert(followeeId);
         
     }
     
     void unfollow(int followerId, int followeeId) {
-        follower[followerId].erase(followeeId);
+        user[followerId].erase(followeeId);
     }
 };
 
