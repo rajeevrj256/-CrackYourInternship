@@ -1,15 +1,14 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        unordered_set<int>hash;
-        for(int num:nums){
-            hash.insert(num);
+        int n=nums.size();
+        int sum=0;
+        for(int i=0;i<n;i++){
+            sum+=nums[i];
         }
+        int orginalsum=n*(n+1)/2;
 
-        for(int i=0;i<nums.size();i++){
-            if(hash.find(i)==hash.end())return i;
-        }
+        return orginalsum-sum;
 
-        return nums.size();
     }
 };
