@@ -20,14 +20,14 @@ public:
 
         vector<vector<int>>ans;
         while(!q.empty()){
-            vector<int>levelElement;
+            ans.emplace_back();  
             int s=q.size();
 
             for(int i=0;i<s;i++){
                 TreeNode* node=q.front();
                 q.pop();
                 
-                levelElement.push_back(node->val);
+                ans.back().push_back(node->val);
                 if(node->left){
                     q.push(node->left);
                 }
@@ -36,7 +36,7 @@ public:
                     q.push(node->right);
                 }
             }
-            ans.push_back(levelElement);
+            
             
         }
 
