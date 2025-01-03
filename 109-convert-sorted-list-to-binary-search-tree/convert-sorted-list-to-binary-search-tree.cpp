@@ -21,32 +21,24 @@
  */
 class Solution {
 public:
-    TreeNode* convertToBST(ListNode* start,ListNode*end){
-        if(start==end)return NULL;
-        ListNode*slow=start;
-        ListNode* fast=start;
-
-        while(fast!=end && fast->next!=end){
-            slow=slow->next;
-            fast=fast->next->next;
-
-            
-        }
-
-        TreeNode* root=new TreeNode(slow->val);
-        root->left=convertToBST(start,slow);
-        root->right=convertToBST(slow->next,end);
-
-        return root;
-
-
-
-
-
-    };
     TreeNode* sortedListToBST(ListNode* head) {
-        if(head==NULL)return NULL;
-        return convertToBST(head,NULL);
+        // bc
+        if(head==NULL) return NULL;
+        if(head->next==NULL) return new TreeNode(head->val);
+
+        ListNode* slow=head;
+        ListNode* fast= head;
+        ListNode* prev=NULL;
+        while(fast!=NULL && fast->next!=NULL){
+            prev=slow;
+            fast=fast->next->next;
+            slow=slow->next;
+        }
+        prev->next=NULL;
+        TreeNode* root= new TreeNode(slow->val);
+        root->left= sortedListToBST(head);
+        root->right= sortedListToBST(slow->next);
+        return root;
         
     }
 };
