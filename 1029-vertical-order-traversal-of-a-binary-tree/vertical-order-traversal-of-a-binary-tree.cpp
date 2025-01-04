@@ -11,41 +11,39 @@
  */
 class Solution {
 public:
-
-    static bool cmp(pair<int,int>a,pair<int,int>b){
-        if(a.first==b.first) return a.second<b.second;
-        return a.first<b.first;
-    }
-    void helper(TreeNode*root,int level,int row,map<int,vector<pair<int,int>>>&hash){
-        if(root==NULL)return;
-        hash[level].push_back({row,root->val});
-        helper(root->left,level-1,row+1,hash);
-        helper(root->right,level+1,row+1,hash);
-    }
     vector<vector<int>> verticalTraversal(TreeNode* root) {
-        if(root==NULL) return {};
+        vector<vector<int>> result;
+    if (!root) return result;
+        map<int,map<int,multiset<int>>>mp;
+        queue<pair<TreeNode*,pair<int,int>>>q;
+        q.push({root,{0,0}});
+        while(!q.empty()){
+            auto p=q.front();
+            q.pop();
+            TreeNode* node=p.first;
+            int index=p.second.first;
+            int level=p.second.second;
 
-        map<int,vector<pair<int,int>>>hash;
-        helper(root,0,0,hash);
+            mp[index][level].insert(node->val);
 
-        vector<vector<int>>ans;
-        for(auto i:hash){
-           vector<int>levelValue;
+            if(node->left){
+                q.push({node->left,{index-1,level+1}});
 
-           sort(i.second.begin(),i.second.end(),cmp);
-
-           for(auto&value:i.second){
-            levelValue.push_back(value.second);
-           }
-
-           ans.push_back(levelValue);
-
-
-
-
+            }
+            if(node->right){
+                q.push({node->right,{index+1,level+1}});
+            }
         }
+        
+        for (auto& [index,level] : mp) {
+            vector<int>vertical;
+            for(auto& [l,val]:level){
+                vertical.insert(vertical.end(), val.begin(), val.end());
+            }
+        result.push_back(vertical);
+    }
 
-        return ans;
+        return result;
         
     }
 };
