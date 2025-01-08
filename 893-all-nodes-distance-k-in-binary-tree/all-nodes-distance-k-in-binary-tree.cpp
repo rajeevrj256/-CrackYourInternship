@@ -30,14 +30,14 @@ public:
 
     }
 
-    void dfs(vector<vector<int>>&adj,vector<int>&res,unordered_set<int>&vis,int target,int k,int count){
+    void dfs(vector<vector<int>>&adj,vector<int>&res,vector<bool> &vis,int target,int k,int count){
         if(count==k){
               res.push_back(target);
               return;
         }
-        vis.insert(target);
+        vis[target] = true;
         for(int neighbor:adj[target]){
-            if(vis.find(neighbor)==vis.end()){
+            if(!vis[neighbor]){
                 dfs(adj,res,vis,neighbor,k,count+1);
             }
         }
@@ -46,8 +46,8 @@ public:
         vector<vector<int>>adj(501);
         adjacentmatric(root,adj);
         vector<int>res;
-        unordered_set<int>vis;
-        dfs(adj,res,vis,target->val,k,0);
+       vector<bool> visited(501, false);
+        dfs(adj,res,visited,target->val,k,0);
         return res;
 
 
