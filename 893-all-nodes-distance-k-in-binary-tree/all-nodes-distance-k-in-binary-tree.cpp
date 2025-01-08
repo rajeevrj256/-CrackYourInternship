@@ -46,26 +46,29 @@ public:
         vector<vector<int>>adj(501);
         adjacentmatric(root,adj);
         vector<int>res;
-       vector<bool> visited(501, false);
-        dfs(adj,res,visited,target->val,k,0);
-        return res;
+       unordered_set<int> visited;
+    queue<pair<int, int>> q;  // {node, current distance}
+    q.push({target->val, 0});
+    visited.insert(target->val);
 
+    while (!q.empty()) {
+        int node = q.front().first;
+        int dist = q.front().second;
+        q.pop();
 
-        // TreeNode* curr=root;
-        // queue<TreeNode*>q;
-        // while(curr){
-        //     if(curr->data==target)break;
-        //     q.push(curr);
-        //     if(curr->left)curr=curr->left;
+        if (dist == k) {
+            res.push_back(node);
+            continue;
+        }
 
-        //     else{
-        //         curr=q.front();
-        //         q.pop();
-        //         curr=curr->right;
-        // }
-
-
-        
+        for (int neighbor : adj[node]) {
+            if (visited.find(neighbor) == visited.end()) {
+                q.push({neighbor, dist + 1});
+                visited.insert(neighbor);
+            }
+        }
+    }
+    return res;
 
     }
 };
