@@ -9,38 +9,35 @@
  *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
  * };
  */
-class Solution {
-public: 
-    int rootIndex=0;
-    TreeNode* solve(vector<int>&preorder,int Instart,int InEnd,unordered_map<int,int>&hash){
-
-        if(Instart>InEnd){
-            return NULL;
+class Solution { 
+public:
+    unordered_map<int, int> inorder_map;  // To store value -> index for inorder traversal
+    int preorder_index = 0;  // To keep track of current node in preorder    
+    TreeNode* buildTreeHelper(const vector<int>& preorder, int inorder_left, int inorder_right) {
+        // Base case: if there are no elements to construct the tree
+        if (inorder_left > inorder_right) {
+            return nullptr;
         }
-        int rootval=preorder[rootIndex++];
-        TreeNode* root=new TreeNode(rootval);
+        // The current root is the next element in preorder traversal
+        int root_val = preorder[preorder_index++];
+        TreeNode* root = new TreeNode(root_val);
 
-        int index=hash[rootval];
-        
+        // Split the inorder array into left and right subtrees using the hashmap
+        int inorder_index = inorder_map[root_val];
 
-
-        root->left=solve(preorder,Instart,index-1,hash);
-        root->right=solve(preorder,index+1,InEnd,hash);
+        // Recursively build the left and right subtrees
+        root->left = buildTreeHelper(preorder, inorder_left, inorder_index - 1);
+        root->right = buildTreeHelper(preorder, inorder_index + 1, inorder_right);
 
         return root;
-
     }
-    
-    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
-        unordered_map<int,int>hash;
-        int i=0;
-        for(int num:inorder){
-            hash[num]=i;
-            i++;
-
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) { 
+        // Build a hashmap to store the index of each value in inorder
+        for (int i = 0; i < inorder.size(); ++i) {
+            inorder_map[inorder[i]] = i;
         }
-        return solve(preorder,0,inorder.size()-1,hash);
-
         
+        // Start building the tree using helper function
+        return buildTreeHelper(preorder, 0, inorder.size() - 1);
     }
 };
