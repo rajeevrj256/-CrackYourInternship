@@ -11,20 +11,21 @@
  */
 class Solution {
 public: 
-    TreeNode* solve(vector<int>&preorder,int preStart,int preEnd,vector<int>&inorder,int Instart,int InEnd,unordered_map<int,int>&hash){
+    int rootIndex=0;
+    TreeNode* solve(vector<int>&preorder,int Instart,int InEnd,unordered_map<int,int>&hash){
 
-        if(preStart>preEnd || Instart>InEnd){
+        if(Instart>InEnd){
             return NULL;
         }
-        int rootval=preorder[preStart];
+        int rootval=preorder[rootIndex++];
         TreeNode* root=new TreeNode(rootval);
 
         int index=hash[rootval];
-        int leftsubtreeSize=index-Instart;
+        
 
 
-        root->left=solve(preorder,preStart+1,preStart+leftsubtreeSize,inorder,Instart,index-1,hash);
-        root->right=solve(preorder,preStart+leftsubtreeSize+1,preEnd,inorder,index+1,InEnd,hash);
+        root->left=solve(preorder,Instart,index-1,hash);
+        root->right=solve(preorder,index+1,InEnd,hash);
 
         return root;
 
@@ -38,7 +39,7 @@ public:
             i++;
 
         }
-        return solve(preorder,0,preorder.size()-1,inorder,0,inorder.size()-1,hash);
+        return solve(preorder,0,inorder.size()-1,hash);
 
         
     }
