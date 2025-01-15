@@ -10,17 +10,31 @@
  * };
  */
 class Solution {
+void inorder(TreeNode* root, vector<int> &ans){
+    if(root == nullptr) return;
+    inorder(root->left, ans);
+    ans.push_back(root->val);
+    inorder(root->right, ans);
+}
 public:
-    unordered_set<int>ss;
     bool findTarget(TreeNode* root, int k) {
-        if(root==NULL)return false;
-        TreeNode* node=root;
-        int remaining=k-root->val;
+        vector<int> ans;
+        inorder(root, ans);
 
-        if(ss.find(remaining)!=ss.end())return true;
+        int start = 0;
 
-        ss.insert(node->val);
-
-        return findTarget(root->left,k) || findTarget(root->right,k);
+        int end = ans.size() - 1;
+        int sum = -1;
+        while(start < end){
+            sum = ans[start] + ans[end];
+            if(sum == k){
+                return true;
+            }else if(sum > k){
+                end--;
+            }else{
+                start++;
+            }
+        }
+        return false;
     }
 };
