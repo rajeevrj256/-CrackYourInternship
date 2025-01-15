@@ -11,65 +11,33 @@
  */
 class BSTIterator {
 public:
-    TreeNode* head=NULL;
-    void flattern(TreeNode* root){
-       TreeNode* curr=root;
-       TreeNode* prev=NULL;
-       TreeNode* lastNode=NULL;
-
-       while(curr){
-        if(curr->left==NULL){
-            if(lastNode){
-                lastNode->right=curr;
-            }else{
-                head=curr;
-            }
-
-            lastNode=curr;
-            
-            curr=curr->right;
-        }else{
-            prev=curr->left;
-            while(prev->right && prev->right!=curr){
-                prev=prev->right;
-            }
-
-            if(prev->right==NULL){
-                prev->right=curr;
-                curr=curr->left;
-            }else{
-                prev->right=NULL;
-                if(lastNode){
-                    lastNode->right=curr;
-                }else{
-                    head=curr;
-                }
-                lastNode=curr;
-                
-                curr=curr->right;
-            }
-        }
-    
-       }
-   
-    }
-
+    stack<TreeNode*>st;
     BSTIterator(TreeNode* root) {
-        flattern(root);
-       
+        while(root){
+            st.push(root);
+            root=root->left;
+        }
+        
     }
     
     int next() {
-        int ans = head->val;
-        head = head->right;
-        return ans;
+        TreeNode* node=st.top();
+        st.pop();
+        TreeNode* next=node->right;
+        while(next){
+            st.push(next);
+            next=next->left;
 
-       
+        }
+
+        return node->val;
         
     }
     
     bool hasNext() {
-        return head!=NULL;
+
+        return !st.empty();
+        
     }
 };
 
