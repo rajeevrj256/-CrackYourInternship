@@ -25,6 +25,8 @@ int mod=1e9+7;
             auto[steps,node]=q.top();
             q.pop();
 
+            if(steps>dist[node])continue;
+
             for(auto neighbor:adj[node]){
                 long  nextnode=neighbor.first;
                 long nextDist=neighbor.second;
