@@ -4,12 +4,15 @@ public:
     bool help(vector<int>&nums,vector<vector<int>>&dp,int index,int target){
 
         if(target==0)return true;
-        if(index>=nums.size() || target<0) return false;
+        if (index == 0) return (nums[0] == target);
 
         if(dp[index][target]!=-1)return dp[index][target];
 
-        bool take=help(nums,dp,index+1,target-nums[index]);
-        bool skip=help(nums,dp,index+1,target);
+        bool skip=help(nums,dp,index-1,target);
+        bool take=false;
+         if (nums[index] <= target) {
+            take=help(nums,dp,index-1,target-nums[index]);
+         }
 
         return dp[index][target]=take|| skip;
     }
@@ -26,6 +29,6 @@ public:
         
         vector<vector<int>> dp(n, vector<int>(sum/2+1, -1));
 
-        return help(nums,dp,0,sum/2);
+        return help(nums,dp,n-1,sum/2);
     }
 };
