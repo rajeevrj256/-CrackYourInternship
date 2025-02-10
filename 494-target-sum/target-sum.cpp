@@ -26,22 +26,24 @@ public:
         int n=nums.size();
         int totalsum=accumulate(nums.begin(),nums.end(),0);
         if(abs(target)>totalsum) return 0;
-        vector<vector<int>>dp(n,vector<int>(2*totalsum+1,0));
+       vector<int>prev(2*totalsum+1,0);
         
-        dp[0][nums[0]+totalsum]=1;
-        dp[0][-nums[0]+totalsum]+=1;
+        prev[nums[0]+totalsum]=1;
+        prev[-nums[0]+totalsum]+=1;
 
         for(int i=1;i<n;i++){
+            vector<int>curr(2*totalsum+1,0);
             for(int j=-totalsum;j<=totalsum;j++){
-                if (dp[i - 1][j + totalsum] > 0) {
-                dp[i][j+nums[i]+totalsum]+=dp[i-1][j+totalsum];
-                dp[i][j-nums[i]+totalsum]+=dp[i-1][j +totalsum];
+                if (prev[j + totalsum] > 0) {
+                curr[j+nums[i]+totalsum]+=prev[j+totalsum];
+                curr[j-nums[i]+totalsum]+=prev[j +totalsum];
                 }
 
                 //dp[i][j+totalsum]=skip+take;
             }
+            prev=curr;
         }
 
-        return dp[n-1][target+totalsum];
+        return prev[target+totalsum];
     }
 };
