@@ -28,7 +28,7 @@ public:
         if(abs(target)>totalsum) return 0;
        vector<int>prev(2*totalsum+1,0);
         
-        prev[nums[0]+totalsum]=1;
+        prev[nums[0]+totalsum]+=1;
         prev[-nums[0]+totalsum]+=1;
 
         for(int i=1;i<n;i++){
