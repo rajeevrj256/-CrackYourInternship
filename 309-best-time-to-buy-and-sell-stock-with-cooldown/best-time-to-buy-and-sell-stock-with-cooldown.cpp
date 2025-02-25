@@ -1,25 +1,33 @@
 class Solution {
 public:
-    int help(vector<int>&prices,int index,int action,vector<vector<int>>&dp){
-        if(index>=prices.size()) return 0;
-
-        int skip=help(prices,index+1,action,dp);
-        
-        if(dp[index][action]!=-1) return dp[index][action];
-        int take=0;
-        if(action==0){
-            take=-prices[index]+help(prices,index+1,1,dp);
-        }else{
-            take=prices[index]+help(prices,index+2,0,dp);
-        }
-
-        return dp[index][action]=max(skip,take);
-    }
+    
     int maxProfit(vector<int>& prices) {
         int n=prices.size();
-        vector<vector<int>>dp(n+1,vector<int>(2,-1));
+        vector<vector<int>>dp(n+1,vector<int>(2,0));
+        for(int i=n-1;i>=0;i--){
+            for(int j=0;j<=1;j++){
+                int skip=dp[i+1][j];
 
-        return help(prices,0,0,dp);
+                int take=0;
+
+                if(j==0){
+                    take=-prices[i]+dp[i+1][1];
+                }else{
+                    if(i+2<n){
+                    take=prices[i]+dp[i+2][0];
+
+                    }else{
+                        take=prices[i];
+                    }
+                }
+
+                dp[i][j]=max(take,skip);
+            }
+        }
+
+        return dp[0][0];
+
+        //return help(prices,0,0,dp);
         
     }
 };
