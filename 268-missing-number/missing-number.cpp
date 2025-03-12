@@ -1,16 +1,14 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        unordered_map<int,bool>hash;
+        int n=nums.size();
+        int actualsum=n*(n+1)/2;
+
+        int currsum=0;
         for(int num:nums){
-            hash[num]=true;
+            currsum+=num;
         }
 
-        for(int i=0;i<=nums.size();i++){
-            if(hash.find(i)==hash.end()) return i;
-        }
-
-        return 0;
-
+        return actualsum-currsum;
     }
 };
