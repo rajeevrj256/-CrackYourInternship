@@ -1,15 +1,16 @@
 class Solution {
 public:
     int missingNumber(vector<int>& nums) {
-        int ans=0;
-        for(int i=1;i<=nums.size();i++){
-            ans=ans^i;
+        unordered_map<int,bool>hash;
+        for(int num:nums){
+            hash[num]=true;
         }
 
-        for(int i=0;i<nums.size();i++){
-            ans=ans^nums[i];
+        for(int i=0;i<=nums.size();i++){
+            if(hash.find(i)==hash.end()) return i;
         }
 
-        return ans;
+        return 0;
+
     }
 };
