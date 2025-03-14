@@ -1,34 +1,27 @@
 class Solution {
 public:
-    
-    int help(vector<int>&nums){
-        int prev=nums[0];
-        int prev2=0;
-        int n=nums.size();
-        for(int i=1; i<n; i++){
-          int pick = nums[i];
-        if(i>1)
-            pick += prev2;
-        int  nonPick = 0 + prev;
-        
-         int cur_i = max(pick, nonPick);
-        prev2 = prev;
-        prev= cur_i;
-        
-    }
-    return prev;
+   int solve(vector<int>&num,vector<int>&dp,int index){
+        if(index>=num.size()) return 0;
+        if(dp[index]!=-1)return dp[index];
+        int skip=solve(num,dp,index+1);
+        int take=num[index]+solve(num,dp,index+2);
+
+       
+        return dp[index]=max(skip,take);
     }
     int rob(vector<int>& nums) {
+         int n=nums.size();
+         if(n==1) return nums[0];
+  
+        vector<int>first(nums.begin(),nums.end()-1);
+        vector<int>second(nums.begin()+1,nums.end());
+        vector<int> dp1(first.size(), -1);
+        vector<int> dp2(second.size(), -1);
+        int firstVal=solve(first,dp1,0);
+      
+        int secondval=solve(second,dp2,0);
 
-        if(nums.size()==1)return nums[0];
-        vector<int> arr1(nums.begin(), nums.end() - 1);  // Exclude last house
-        vector<int> arr2(nums.begin() + 1, nums.end());  // Exclude first house
-
+        return max(firstVal,secondval);
         
-
-        int ans1=help(arr1);
-        int ans2=help(arr2);
-
-        return max(ans1,ans2);
     }
 };
