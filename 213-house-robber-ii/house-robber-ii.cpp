@@ -1,13 +1,16 @@
 class Solution {
 public:
-   int solve(vector<int>&num,vector<int>&dp,int index){
-        if(index>=num.size()) return 0;
-        if(dp[index]!=-1)return dp[index];
-        int skip=solve(num,dp,index+1);
-        int take=num[index]+solve(num,dp,index+2);
+   int solve(vector<int>&nums){
+        int prev1=0;
+        int prev2=0;
 
-       
-        return dp[index]=max(skip,take);
+        for(int num:nums){
+            int temp=max(prev1,prev2+num);
+            prev2=prev1;
+            prev1=temp;
+        }
+
+        return prev1;
     }
     int rob(vector<int>& nums) {
          int n=nums.size();
@@ -15,11 +18,10 @@ public:
   
         vector<int>first(nums.begin(),nums.end()-1);
         vector<int>second(nums.begin()+1,nums.end());
-        vector<int> dp1(first.size(), -1);
-        vector<int> dp2(second.size(), -1);
-        int firstVal=solve(first,dp1,0);
+       
+        int firstVal=solve(first);
       
-        int secondval=solve(second,dp2,0);
+        int secondval=solve(second);
 
         return max(firstVal,secondval);
         
