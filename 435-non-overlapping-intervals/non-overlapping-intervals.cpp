@@ -1,35 +1,22 @@
 class Solution {
 public:
-    static bool cmp(vector<int>a,vector<int>b){
-        return b[1]>a[1];
+    static bool cmp(vector<int>& a, vector<int>& b){
+        return a[1] < b[1];
     }
+
     int eraseOverlapIntervals(vector<vector<int>>& intervals) {
-        int n=intervals.size();
-        sort(intervals.begin(),intervals.end(),cmp);
-        int start=intervals[0][0];
-        int end=intervals[0][1];
+        int n = intervals.size();
+        sort(intervals.begin(), intervals.end(), cmp);
 
-        int i=1;
-        int count=0;
-        while(i<n){
-            int newstart=intervals[i][0];
-            int newend=intervals[i][1];
+        int prev = 0;
+        int count = 1;
 
-            if(end>newstart){
+        for(int i = 1; i < n; i++){
+            if(intervals[i][0] >= intervals[prev][1]){
+                prev = i;
                 count++;
-               
-              
-            }else{
-
-            start=newstart;
-            end=newend;
             }
-            i++;
         }
-
-        return count;
-        
-
-
+        return n - count;
     }
 };
