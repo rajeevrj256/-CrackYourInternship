@@ -1,45 +1,43 @@
 class Solution {
 public:
-    bool dfs(vector<vector<char>>&board,string word, int x,int y,int index,int n,int m,vector<vector<bool>>&vis){
-        if(index>=word.size()) return true;
-        vis[x][y]=true;
-        
-        int dx[4]={-1,1,0,0};
-        int dy[4]={0,0,1,-1};
+    bool dfs(vector<vector<char>>& board, string& word, int x, int y, int index, int n, int m) {
+        if (index >= word.size()) return true;
 
-        for(int i=0;i<4;i++){
-            int nx=dx[i]+x;
-            int ny=dy[i]+y;
+        // Correct order of boundary check and character match
+        if (x < 0 || x >= n || y < 0 || y >= m || board[x][y] != word[index]) return false;
 
-            if(nx>=0 && nx<n && ny>=0 && ny<m &&  !vis[nx][ny] && board[nx][ny]==word[index]){
-                if(dfs(board,word,nx,ny,index+1,n,m,vis)){
-                    return true;
-                }
+        char temp = board[x][y];  // Store the original character
+        board[x][y] = '#';  // Mark as visited
+
+        int dx[4] = {-1, 1, 0, 0};
+        int dy[4] = {0, 0, -1, 1};
+
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+
+            if (dfs(board, word, nx, ny, index + 1, n, m)) {
+                return true;
             }
         }
 
-        vis[x][y]=false;
+        board[x][y] = temp;  // Backtrack to restore the original character
 
         return false;
     }
+
     bool exist(vector<vector<char>>& board, string word) {
-        int n=board.size();
-        int m=board[0].size();
-       
-        vector<vector<bool>> vis(n, vector<bool>(m, false));
+        int n = board.size();
+        int m = board[0].size();
 
-
-        for(int i=0;i<n;i++){
-            for(int j=0;j<m;j++){
-                if(board[i][j]==word[0] && dfs(board,word,i,j,1,n,m,vis)){
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (board[i][j] == word[0] && dfs(board, word, i, j, 0, n, m)) {
                     return true;
                 }
             }
         }
 
-
         return false;
-
-        
     }
 };
