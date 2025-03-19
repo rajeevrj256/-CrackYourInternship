@@ -10,38 +10,40 @@
  */
 class Solution {
 public:
+    
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
-        if(list1==NULL)return list2;
-        if(list2==NULL) return list1;
-
-        if(list1==NULL && list2==NULL)return NULL;
-
+        if(list1==NULL and list2!=NULL) return list2;
+         if(list1!=NULL and list2==NULL) return list1;
         ListNode* dummy=new ListNode(0);
-        ListNode* head=dummy;
+        ListNode* temp=dummy;
 
         while(list1 && list2){
             if(list1->val>list2->val){
-                head->next=list2;
+                temp->next=list2;
                 list2=list2->next;
+            
             }else{
-                head->next=list1;
+                temp->next=list1;
                 list1=list1->next;
             }
 
-            head=head->next;
+            temp=temp->next;
         }
 
         if(list1){
-            head->next=list1;
+            temp->next=list1;
             list1=list1->next;
+            temp=temp->next;
         }
 
         if(list2){
-            head->next=list2;
+            temp->next=list2;
             list2=list2->next;
+            temp=temp->next;
         }
 
         return dummy->next;
+
 
 
 
