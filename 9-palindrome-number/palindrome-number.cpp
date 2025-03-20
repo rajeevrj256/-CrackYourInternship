@@ -2,8 +2,10 @@ class Solution {
 public:
     bool isPalindrome(int x) {
         string s=to_string(x);
-        string t=s;
-        reverse(t.begin(),t.end());
+        string t="";
+        for(int i=s.size()-1;i>=0;i--){
+            t+=s[i];
+        }
 
         return s==t;
     }
