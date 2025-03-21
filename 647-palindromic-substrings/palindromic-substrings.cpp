@@ -1,28 +1,30 @@
 class Solution {
 public:
-    bool check(string s,int i,int j,vector<vector<int>>&dp){
-        if(i>j) return true;
-        
-        if(dp[i][j]!=-1) return dp[i][j];
-
-        if(s[i]==s[j]){
-            return dp[i][j]=check(s,i+1,j-1,dp);
-        }
-
-        return false;
-    }
     int countSubstrings(string s) {
         int n=s.size();
+        vector<vector<bool>>dp(n,vector<bool>(n,false));
         int len=0;
-        vector<vector<int>>dp(n,vector<int>(n,-1));
-        for(int i=0;i<n;i++){
-            for(int j=i;j<n;j++){
-                  if(check(s,i,j,dp)){
-                    len++;
-                  }
-            }
-        }
+        for(int L=1;L<=n;L++){
+            for(int i=0;i+L-1<n;i++){
+                int j=i+L-1;
+                if(i==j) dp[i][j]=true;
+                else if(i+1==j) {
+                    if(s[i]==s[j]) {
+                        dp[i][j]=true;
+                    }
+                }
+                else{
+                    if(s[i]==s[j] && dp[i+1][j-1]){
+                        dp[i][j]=true;
+                    }
+                }
 
-        return len;
+                if(dp[i][j]==true)len++;
+            }
+
+        }
+            return len;
+
+
     }
 };
