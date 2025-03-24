@@ -11,23 +11,27 @@
  */
 class Solution {
 public:
-    int countNodes(TreeNode* root) {
-        if (!root) return 0;
-        return 1 + countNodes(root->left) + countNodes(root->right);
+    void help(TreeNode* root,int& cnt,int& ans,int k){
+        if(root==NULL) return ;
+
+        help(root->left,cnt,ans,k);
+        cnt++;
+        if(cnt==k){
+            ans=root->val;
+            return;
+        }
+
+        help(root->right,cnt,ans,k);
     }
 
     int kthSmallest(TreeNode* root, int k) {
-        int leftSubtreeSize = countNodes(root->left);
+
+        int cnt=0;
+        int ans=0;
+
+        help(root,cnt,ans,k);
+
+        return ans;
         
-        if (k == leftSubtreeSize + 1) {
-            // Current node is the k-th smallest element
-            return root->val;
-        } else if (k <= leftSubtreeSize) {
-            // Search in the left subtree
-            return kthSmallest(root->left, k);
-        } else {
-            // Search in the right subtree, adjusting k
-            return kthSmallest(root->right, k - leftSubtreeSize - 1);
-        }
     }
 };
