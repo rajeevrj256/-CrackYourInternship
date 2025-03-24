@@ -11,20 +11,21 @@
  */
 class Solution {
 public:
-    unordered_map<int,int>hash;
-    int post_index;
-    TreeNode* solve(vector<int>&postorder,int Instart,int Inend){
-        if(Instart>Inend)return NULL;
+   unordered_map<int,int>hash;
+    TreeNode* build(vector<int>&inorder,int instart,int inend,int postend, vector<int>&postorder){
 
-        int rootval=postorder[post_index--];
-        TreeNode* root=new TreeNode(rootval);
+        if(instart>inend || postend<0) return NULL;
 
-        int index=hash[rootval];
+        int root_val=postorder[postend];
+        TreeNode* node=new TreeNode(root_val);
+        int idx=hash[root_val];
+        int len=inend-idx;
 
-        root->right=solve(postorder,index+1,Inend);
-        root->left=solve(postorder,Instart,index-1);
+        node->left=build(inorder,instart,idx-1,postend-len-1,postorder);
+        node->right=build(inorder,idx+1,inend,postend-1,postorder);
 
-        return root;
+        return node;
+          
     }
     TreeNode* buildTree(vector<int>& inorder, vector<int>& postorder) {
         int i=0;
@@ -32,10 +33,10 @@ public:
             hash[num]=i;
             i++;
         }
-        post_index=postorder.size()-1;
 
-        return solve(postorder,0,inorder.size()-1);
+        int postend=postorder.size()-1;
 
+        return build(inorder,0,inorder.size()-1,postend,postorder);
 
     }
 };
