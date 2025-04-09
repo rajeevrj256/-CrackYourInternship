@@ -1,12 +1,13 @@
 class Solution {
 public:
     int minOperations(vector<int>& nums, int k) {
-        unordered_map<int,int>hash;
-        for(int num:nums){
-            if(num<k) return -1;
-            else if(num>k) hash[num]++;
-        }
+        int mini = *min_element(nums.begin(), nums.end());
+            if (mini < k) return -1;
 
-        return hash.size();
+            bitset<100001> st;
+            for (int i : nums) 
+                if (i > k) st.set(i);
+                
+            return st.count();
     }
 };
