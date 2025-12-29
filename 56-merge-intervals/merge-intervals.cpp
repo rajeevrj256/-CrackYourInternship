@@ -1,34 +1,24 @@
 class Solution {
 public:
+    static bool cmp(vector<int>&a,vector<int>&b){
+        return a[0]<b[0];
+    }
     vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        int n=intervals.size();
-        sort(intervals.begin(), intervals.end());
+        sort(intervals.begin(),intervals.end(),cmp);
         int start=intervals[0][0];
         int end=intervals[0][1];
-        int i=1;
-        vector<vector<int>>ans;
 
-        while(i<n){
-            int newstart=intervals[i][0];
-            int newend=intervals[i][1];
-            
-
-            if(end>=newstart ){
-                end=max(newend,end);
-               
-                
+vector<vector<int>>ans;
+        for(int i=1;i<intervals.size();i++){
+            if(end>=intervals[i][0]){
+                end=max(end,intervals[i][1]);
+            }else{
+                 ans.push_back({start,end});
+                end=intervals[i][1];
+                start=intervals[i][0];
             }
-
-            else{
-                ans.push_back({start,end});
-                start=newstart;
-                end=newend;
-            }
-            i++;
         }
-
         ans.push_back({start,end});
-
         return ans;
     }
 };
