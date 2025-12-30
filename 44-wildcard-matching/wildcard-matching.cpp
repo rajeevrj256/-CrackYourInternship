@@ -15,7 +15,7 @@ public:
         }else{
              bool firstMatchChar=(i<s.length() && (s[i]==p[j] || p[j]=='?'));
 
-            if(j<p.length() && p[j]=='*'){
+            if(p[j]=='*'){
            
 
             bool not_take=solve(i,j+1);
