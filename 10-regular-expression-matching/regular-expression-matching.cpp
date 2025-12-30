@@ -1,22 +1,40 @@
 class Solution {
 public:
-    bool solve(string s,string p){
-        if(p.length()==0){
-            if(s.length()==0) return true;
-
-            return false;
+    string s;
+    string p;
+    vector<vector<int>>dp;
+    bool solve(int i,int j){
+        if(dp[i][j]!=-1){
+            return dp[i][j];
         }
 
-       bool isFirstCharMatch=!s.empty() && (s[0]==p[0] || p[0]=='.');
-        if(p.length()>=2 && p[1]=='*'){
-            bool not_take=solve(s,p.substr(2));
-            bool take=(isFirstCharMatch)&& solve(s.substr(1),p);
-            return not_take || take;
+        bool ans;
+
+        if(j==p.length()){
+            return dp[i][j]= (i==s.length());
         }else{
-            return isFirstCharMatch && solve(s.substr(1),p.substr(1));
+             bool firstMatchChar=(i<s.length() && (s[i]==p[j] || p[j]=='.'));
+
+            if(j+1<p.length() && p[j+1]=='*'){
+           
+
+            bool not_take=solve(i,j+2);
+
+            bool take=firstMatchChar && solve(i+1,j);
+            ans=take || not_take;
+            }else{
+              ans= firstMatchChar && solve(i+1,j+1);
+            }
         }
+
+
+        return dp[i][j]=ans;
     }
     bool isMatch(string s, string p) {
-        return solve(s,p);
+
+        this->p=p;
+        this->s=s;
+        dp.assign(s.length() + 1, vector<int>(p.length() + 1, -1));
+        return solve(0,0);
     }
 };
